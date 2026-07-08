@@ -2,14 +2,21 @@ from flask import Flask, render_template, jsonify, request, send_from_directory
 import os
 import datetime
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATE_DIR = os.path.join(BASE_DIR, "frontend", "templates")
+STATIC_DIR = os.path.join(BASE_DIR, "frontend", "static")
+
 app = Flask(
     __name__,
-    static_folder="frontend/static",
-    template_folder="frontend/templates",
+    static_folder=STATIC_DIR,
+    template_folder=TEMPLATE_DIR,
 )
 
-DATA_FOLDER = "data"
-os.makedirs(DATA_FOLDER, exist_ok=True)
+DATA_FOLDER = os.getenv("DATA_FOLDER", "/tmp/data")
+try:
+    os.makedirs(DATA_FOLDER, exist_ok=True)
+except OSError:
+    DATA_FOLDER = "/tmp"
 
 @app.route("/")
 def home():
@@ -17,9 +24,15 @@ def home():
 
 @app.route("/api/files")
 def api_files():
-    mk_dir = os.path.join(os.path.expanduser("~"), "MK")
-    os.makedirs(mk_dir, exist_ok=True)
-    arquivos = [f for f in os.listdir(mk_dir) if f.endswith((".mp3", ".txt"))]
+    try:
+        home_dir = os.path.expanduser("~")
+        mk_dir = os.path.join(home_dir, "MK")
+        if os.path.isdir(mk_dir):
+            arquivos = [f for f in os.listdir(mk_dir) if f.endswith((".mp3", ".txt"))]
+        else:
+            arquivos = []
+    except OSError:
+        arquivos = []
     return jsonify({"files": sorted(arquivos, reverse=True)})
 
 @app.route("/add_task", methods=["POST"])
