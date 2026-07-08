@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Legalized Musik Project</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/static/icons/icon.svg" />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <meta name="theme-color" content="#12121d" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header>
+        <div class="logo">
+          <strong>Legalized</strong>
+          <span>Musik Project</span>
+        </div>
+        <p>
+          Divulgação de músicas, projetos futuros e novidades. Instale como app
+          PWA.
+        </p>
+      </header>
+
+      <main>
+        <section class="hero">
+          <h1>Bem-vindo ao Legalized Musik Project</h1>
+          <p>
+            Um PWA leve para Android e iPhone, com foco em música e lançamentos
+            futuros.
+          </p>
+          <div class="actions">
+            <a class="button" href="/api/files">Ver arquivos gravados</a>
+            <button id="refreshButton" class="button secondary">
+              Atualizar lista
+            </button>
+          </div>
+        </section>
+
+        <section class="list-section">
+          <div class="section-title">
+            <h2>Últimos arquivos</h2>
+            <span>Arquivos na pasta MK</span>
+          </div>
+          <div id="filesList" class="files-list">
+            <p>Carregando arquivos...</p>
+          </div>
+        </section>
+
+        <section class="info-cards">
+          <article>
+            <h3>Modo PWA</h3>
+            <p>Instale o app e acesse sem navegador sempre que quiser.</p>
+          </article>
+          <article>
+            <h3>Divulgação</h3>
+            <p>
+              Use o Legalized Musik para mostrar músicas, novidades e
+              lançamentos.
+            </p>
+          </article>
+          <article>
+            <h3>Próximos passos</h3>
+            <p>
+              Novos conteúdos, playlists e projetos estarão disponíveis em
+              breve.
+            </p>
+          </article>
+        </section>
+      </main>
+
+      <div id="installCard" class="install-card hidden">
+        <p>Instale o Legalized Musik Project no seu dispositivo.</p>
+        <button id="installButton" class="button">Instalar app</button>
+        <button id="dismissInstall" class="button secondary">Fechar</button>
+      </div>
+    </div>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
