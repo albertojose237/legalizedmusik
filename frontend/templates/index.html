@@ -39,6 +39,36 @@
               Atualizar lista
             </button>
           </div>
+          <div
+            style="
+              margin-top: 12px;
+              display: flex;
+              gap: 8px;
+              align-items: center;
+              flex-wrap: wrap;
+            "
+          >
+            <button id="recordStartBtn" class="button secondary">
+              Iniciar gravação
+            </button>
+            <button id="recordStopBtn" class="button secondary hidden">
+              Parar gravação
+            </button>
+            <span id="recordStatus" style="color: #c6c6dc; margin-left: 8px"
+              >Aguardando</span
+            >
+          </div>
+          <div
+            style="
+              margin-top: 12px;
+              display: flex;
+              gap: 8px;
+              align-items: center;
+            "
+          >
+            <input id="uploadFileInput" type="file" accept="audio/*" />
+            <button id="uploadFileBtn" class="button">Enviar gravação</button>
+          </div>
         </section>
 
         <section class="list-section">

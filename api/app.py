@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request, send_from_directory
 import os
 import datetime
+from werkzeug.utils import secure_filename
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, "frontend", "templates")
@@ -17,6 +18,13 @@ try:
     os.makedirs(DATA_FOLDER, exist_ok=True)
 except OSError:
     DATA_FOLDER = "/tmp"
+
+# Uploads folder (for files sent from the PWA/mobile)
+UPLOAD_FOLDER = os.path.join(DATA_FOLDER, "uploads")
+try:
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+except OSError:
+    UPLOAD_FOLDER = DATA_FOLDER
 
 @app.route("/")
 def home():
@@ -42,6 +50,23 @@ def add_task():
         with open(os.path.join(DATA_FOLDER, "tasks.txt"), "a", encoding="utf-8") as f:
             f.write(f"[{datetime.datetime.now().strftime('%H:%M')}] {task}\n")
     return jsonify({"status": "ok"})
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    """Recebe um arquivo enviado pelo frontend (ex: gravação) e salva no servidor."""
+    if 'file' not in request.files:
+        return jsonify({"error": "no file provided"}), 400
+    f = request.files['file']
+    if f.filename == '':
+        return jsonify({"error": "empty filename"}), 400
+    filename = secure_filename(f.filename)
+    dest = os.path.join(UPLOAD_FOLDER, filename)
+    try:
+        f.save(dest)
+    except OSError:
+        return jsonify({"error": "failed to save file"}), 500
+    return jsonify({"status": "ok", "filename": filename})
 
 @app.route("/tasks")
 def get_tasks():
